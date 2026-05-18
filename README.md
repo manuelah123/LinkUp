@@ -2,7 +2,7 @@
 
 Aplicación web que permite a los usuarios registrarse, publicar posts, comentar y dar likes en un feed social.
 
-## Integrantes y Roles
+## Integrantes
 
 ```
 Maria paula Romero Diaz
