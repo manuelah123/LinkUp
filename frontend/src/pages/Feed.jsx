@@ -19,24 +19,19 @@ export default function Feed() {
   const loadPosts = async () => {
     setLoading(true);
     setError(null);
-    setTimeout(() => {
-      setPosts([
-        {
-          id: 1, username: "marce", user_id: 1,
-          content: "¡Bienvenidos a LinkUp! 🪼 Esta es la primera publicación.",
-          image_url: "", likes_count: 12, comments_count: 3,
-          liked_by_user: false, created_at: new Date().toISOString(),
-        },
-        {
-          id: 2, username: "juan", user_id: 2,
-          content: "Explorando las maravillas del océano 🌊",
-          image_url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800",
-          likes_count: 45, comments_count: 8,
-          liked_by_user: true, created_at: new Date(Date.now() - 3600000).toISOString(),
-        },
-      ]);
+    try {
+      const data = await postsAPI.getAll();  // ← llama a la API real
+      setPosts(data);
+    } catch (err) {
+      if (err.message.includes("401") || err.message.includes("Unauthorized")) {
+        localStorage.removeItem("token");
+        navigate("/login");
+      } else {
+        setError("No se pudo cargar el feed. Intenta de nuevo.");
+      }
+    } finally {
       setLoading(false);
-    }, 800);
+    }
   };
 
   const handleDelete = (postId) => setPosts((prev) => prev.filter((p) => p.id !== postId));
